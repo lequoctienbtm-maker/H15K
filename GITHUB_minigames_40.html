@@ -1,0 +1,125 @@
+<!-- GITHUB_FIRST -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🎮 40 Cute Arcade Mini-Games (GITHUB Start)</title>
+  <style>
+    :root { --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); --card-bg: rgba(255, 255, 255, 0.94); --primary: #ff4b72; --secondary: #00d2d3; --accent: #ff9f43; --text: #2d3436; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg-gradient); min-height: 100vh; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 16px; overflow-x: hidden; }
+    header { text-align: center; margin-bottom: 16px; color: #2d3436; }
+    header h1 { font-size: 1.85rem; font-weight: 900; }
+    .console-card { width: 100%; max-width: 440px; background: var(--card-bg); border-radius: 28px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .game-badge-bar { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+    .game-id-badge { background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 0.85rem; padding: 6px 14px; border-radius: 999px; }
+    .score-badge { background: #fef3c7; color: #b45309; font-weight: 800; font-size: 0.85rem; padding: 6px 14px; border-radius: 999px; }
+    .game-screen { width: 100%; min-height: 290px; background: #ffffff; border-radius: 22px; border: 3px dashed #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+    .game-title { font-size: 1.25rem; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+    .game-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 16px; }
+    #game-interactive { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+    .interactive-emoji { font-size: 3.8rem; cursor: pointer; transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .interactive-emoji:active { transform: scale(0.85); }
+    .cute-btn { background: linear-gradient(135deg, #00d2d3, #54a0ff); color: white; border: none; font-size: 1rem; font-weight: 800; padding: 10px 20px; border-radius: 14px; cursor: pointer; }
+    .btn-random { width: 100%; background: linear-gradient(135deg, #ff4b72, #ff9f43); color: white; border: none; padding: 15px; border-radius: 18px; font-size: 1.15rem; font-weight: 900; cursor: pointer; }
+    .btn-random:active { transform: scale(0.96); }
+    .particle { position: absolute; pointer-events: none; animation: floatUp 0.75s ease-out forwards; font-size: 1.4rem; }
+    @keyframes floatUp { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.4); } }
+  </style>
+</head>
+<body>
+  <header><h1>🕹️ Arcade Mini 40 🌸</h1></header>
+  <div class="console-card">
+    <div class="game-badge-bar">
+      <div class="game-id-badge" id="badge-game-id">Game #1 / 40</div>
+      <div class="score-badge">⭐ <span id="score-val">0</span> pts</div>
+    </div>
+    <div class="game-screen">
+      <div class="game-title" id="game-title">Đang tải...</div>
+      <div class="game-desc" id="game-desc">...</div>
+      <div id="game-interactive"></div>
+    </div>
+    <button class="btn-random" onclick="randomizeGame()">🎲 RANDOM GAME MỚI 🎲</button>
+  </div>
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination); const now = audioCtx.currentTime;
+      if (type === 'pop') { osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.1); gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1); osc.start(now); osc.stop(now + 0.1); }
+      else if (type === 'meow') { osc.type = 'triangle'; osc.frequency.setValueAtTime(500, now); osc.frequency.linearRampToValueAtTime(850, now + 0.15); osc.frequency.linearRampToValueAtTime(600, now + 0.3); gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
+      else if (type === 'win') { osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(1046.50, now + 0.2); gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
+      else { osc.type = 'square'; osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(600, now + 0.15); gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15); osc.start(now); osc.stop(now + 0.15); }
+    }
+    let currentScore = 0;
+    function addScore(pts = 10, x, y) {
+      currentScore += pts; document.getElementById('score-val').innerText = currentScore;
+      if (x && y) {
+        const p = document.createElement('div'); p.className = 'particle'; p.innerText = '✨';
+        p.style.left = x + 'px'; p.style.top = y + 'px';
+        p.style.setProperty('--tx', (Math.random()*80 - 40) + 'px'); p.style.setProperty('--ty', (Math.random()*-80 - 30) + 'px');
+        document.body.appendChild(p); setTimeout(() => p.remove(), 750);
+      }
+    }
+    const GAMES_LIST = [
+      { id: 1, title: "🐱 Vuốt Ve Mèo Con", desc: "Chạm vào bé mèo để nghe tiếng meo meo!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('meow');addScore(10, event.clientX, event.clientY)">🐱</div>`; } },
+      { id: 2, title: "🫧 Bóp Bong Bóng", desc: "Bóp vỡ bong bóng xả stress!", render: (c) => { c.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;">${[...Array(6)].map(()=>`<button class="cute-btn" style="border-radius:50%;width:50px;height:50px;padding:0;" onclick="playSound('pop');addScore(5);this.style.opacity='0.2';this.disabled=true;">🫧</button>`).join('')}</div>`; } },
+      { id: 3, title: "🍪 Nướng Cookie", desc: "Bấm liên tục để nướng bánh!", render: (c) => { let count=0; c.innerHTML = `<div class="interactive-emoji" id="ck-btn">🍪</div><div id="c-count" style="font-weight:bold;color:#ff9f43">0 Bánh</div>`; document.getElementById('ck-btn').onclick=(e)=>{ playSound('pop'); count++; document.getElementById('c-count').innerText=count+" Bánh"; addScore(5, e.clientX, e.clientY); }; } },
+      { id: 4, title: "🐥 Cho Vịt Ăn", desc: "Thả bắp rang cho vịt!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(10, event.clientX, event.clientY)">🐥 🌽</div>`; } },
+      { id: 5, title: "🎈 Bắn Bóng Bay", desc: "Chạm để làm nổ bóng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');this.innerText='💥';addScore(15, event.clientX, event.clientY)">🎈</div>`; } },
+      { id: 6, title: "🐸 Ếch Nhảy", desc: "Giúp ếch vượt hồ!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(10, event.clientX, event.clientY)">🐸 🪷</div>`; } },
+      { id: 7, title: "🎁 Mở Hộp Quà", desc: "Khám phá quà bí ẩn!", render: (c) => { const gifts=['💎','🧸','🍭','🚀','👑']; c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');this.innerText=gifts[Math.floor(Math.random()*gifts.length)];addScore(20, event.clientX, event.clientY)">🎁</div>`; } },
+      { id: 8, title: "🌸 Nhặt Hoa Anh Đào", desc: "Thu hoạch cánh hoa rơi!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🌸 🍃</div>`; } },
+      { id: 9, title: "🧋 Uống Trà Sữa", desc: "Hút trân châu thơm ngon!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🧋</div>`; } },
+      { id: 10, title: "🚀 Bắn Tên Lửa", desc: "Đếm ngược phóng tàu!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(15, event.clientX, event.clientY)">🚀 🪐</div>`; } },
+      { id: 11, title: "🍓 Hái Dâu Tây", desc: "Lượm dâu chín mọng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍓 🧺</div>`; } },
+      { id: 12, title: "🐶 Chó Con Lắc Đuôi", desc: "Gãi đầu cho cún cưng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(10, event.clientX, event.clientY)">🐶 🦴</div>`; } },
+      { id: 13, title: "🥑 Cắt Quả Bơ", desc: "Tách đôi quả bơ!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🥑 🥑</div>`; } },
+      { id: 14, title: "⚡ Tích Điện Pikachu", desc: "Sạc đầy pin!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(15, event.clientX, event.clientY)">⚡ 🔋</div>`; } },
+      { id: 15, title: "🍉 Bổ Dưa Hấu", desc: "Cắt miếng dưa hấu ngọt!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍉 🍉</div>`; } },
+      { id: 16, title: "🛸 Gặp Alien", desc: "Chào đón bạn Alien!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(20, event.clientX, event.clientY)">🛸 👽</div>`; } },
+      { id: 17, title: "🍣 Cuộn Sushi", desc: "Cuộn cơm cá hồi!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍣 🥢</div>`; } },
+      { id: 18, title: "🦄 Cho Kỳ Lân Cầu Vồng", desc: "Triệu hồi sắc màu!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(25, event.clientX, event.clientY)">🦄 🌈</div>`; } },
+      { id: 19, title: "🍔 Làm Burger", desc: "Kẹp phô mai & thịt!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍔 🧀</div>`; } },
+      { id: 20, title: "🐼 Gấu Trúc Ăn Trúc", desc: "Cho gấu trúc nhai lá!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🐼 🎋</div>`; } },
+      { id: 21, title: "🎯 Bắn Tiêu", desc: "Trúng tâm điểm!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(20, event.clientX, event.clientY)">🎯 🏹</div>`; } },
+      { id: 22, title: "🍦 Múc Kem", desc: "Xếp kem 3 màu!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍦 🍨</div>`; } },
+      { id: 23, title: "🦖 T-Rex Nhảy", desc: "Vượt bụi xương rồng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(10, event.clientX, event.clientY)">🦖 🌵</div>`; } },
+      { id: 24, title: "💎 Khai Thác Kim Cương", desc: "Đào đá quý!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(25, event.clientX, event.clientY)">⛏️ 💎</div>`; } },
+      { id: 25, title: "🍩 Rắc Kẹo Donut", desc: "Trang trí bánh vòng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍩 ✨</div>`; } },
+      { id: 26, title: "🐙 Bạch Tuộc Nhảy Múa", desc: "Quẩy cùng bé bạch tuộc!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(10, event.clientX, event.clientY)">🐙 🌊</div>`; } },
+      { id: 27, title: "🍿 Nổ Bắp Rang", desc: "Bắp nổ bung giòn!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍿 🔥</div>`; } },
+      { id: 28, title: "🎸 Đánh Đàn Guitar", desc: "Giai điệu rực cháy!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(15, event.clientX, event.clientY)">🎸 🎶</div>`; } },
+      { id: 29, title: "🍕 Nướng Pizza", desc: "Phô mai chảy thơm lừng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🍕 🍅</div>`; } },
+      { id: 30, title: "🦩 Hồng Hạc Thăng Bằng", desc: "Đứng 1 chân!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(10, event.clientX, event.clientY)">🦩 🌴</div>`; } },
+      { id: 31, title: "🍯 Lấy Mật Ong", desc: "Thu mật ngọt!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(15, event.clientX, event.clientY)">🍯 🐝</div>`; } },
+      { id: 32, title: "🌮 Cuộn Tacos", desc: "Bánh kẹp cay giòn!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🌮 🌶️</div>`; } },
+      { id: 33, title: "🏎️ Đua Xe F1", desc: "Đạp ga về đích!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('jump');addScore(20, event.clientX, event.clientY)">🏎️ 🏁</div>`; } },
+      { id: 34, title: "🥞 Rưới Mật Pancake", desc: "Bánh xếp ngọt ngào!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🥞 🍯</div>`; } },
+      { id: 35, title: "🦔 Nhím Nhặt Nấm", desc: "Ghim nấm rừng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🦔 🍄</div>`; } },
+      { id: 36, title: "🎲 Đổ Xúc Xắc", desc: "Tung điểm số!", render: (c) => { const d=['⚀','⚁','⚂','⚃','⚄','⚅']; c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');this.innerText=d[Math.floor(Math.random()*d.length)];addScore(15, event.clientX, event.clientY)">🎲</div>`; } },
+      { id: 37, title: "🐣 Trứng Nở Gà Con", desc: "Gõ vỡ quả trứng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');this.innerText='🐣';addScore(20, event.clientX, event.clientY)">🥚</div>`; } },
+      { id: 38, title: "🧀 Bẫy Phô Mai", desc: "Rút phô mai siêu tốc!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('pop');addScore(10, event.clientX, event.clientY)">🐭 🧀</div>`; } },
+      { id: 39, title: "⭐ Hái Sao Băng", desc: "Ước nguyện bầu trời!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(25, event.clientX, event.clientY)">⭐ 🌠</div>`; } },
+      { id: 40, title: "🎉 Pháo Giấy", desc: "Chúc mừng chiến thắng!", render: (c) => { c.innerHTML = `<div class="interactive-emoji" onclick="playSound('win');addScore(50, event.clientX, event.clientY)">🎉 🎊</div>`; } }
+    ];
+    let lastIndex = -1;
+    function randomizeGame() {
+      playSound('pop');
+      let randomIndex;
+      do { randomIndex = Math.floor(Math.random() * GAMES_LIST.length); } while (randomIndex === lastIndex && GAMES_LIST.length > 1);
+      lastIndex = randomIndex;
+      const game = GAMES_LIST[randomIndex];
+      document.getElementById('badge-game-id').innerText = `Game #${game.id} / 40`;
+      document.getElementById('game-title').innerText = game.title;
+      document.getElementById('game-desc').innerText = game.desc;
+      const container = document.getElementById('game-interactive');
+      container.innerHTML = '';
+      game.render(container);
+    }
+    randomizeGame();
+  </script>
+</body>
+</html>
